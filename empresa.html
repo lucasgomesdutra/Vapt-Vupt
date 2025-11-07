@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAPT-VUPT - Centro de Distribuição</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f6fa;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #0033CC 0%, #0052FF 50%, #00D4AA 100%);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .navbar-brand .logo {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .navbar-brand h1 {
+            font-size: 1.8em;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background: white;
+            color: #0052FF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #0052FF;
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+            color: white;
+            font-size: 1em;
+            padding: 12px 25px;
+        }
+
+        .reset-btn:hover {
+            background: linear-gradient(135deg, #e83e8c 0%, #dc3545 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(220, 53, 69, 0.4);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .centro-distribuicao {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .centro-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #0033CC 0%, #0052FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+        }
+
+        .centro-info h3 {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+        }
+
+        .centro-info p {
+            color: #0052FF;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .stat-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+        }
+
+        .stat-icon.blue { background: linear-gradient(135deg, #0033CC 0%, #0052FF 100%); }
+        .stat-icon.green { background: linear-gradient(135deg, #28a745 0%, #00D4AA 100%); }
+        .stat-icon.orange { background: linear-gradient(135deg, #fd7e14 0%, #ffc107 100%); }
+        .stat-icon.red { background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%); }
+
+        .stat-info h3 {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+        }
+
+        .stat-info p {
+            color: #0052FF;
+            font-size: 2em;
+            font-weight: 900;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #0033CC 0%, #0052FF 100%);
+            color: white;
+            border-color: #0052FF;
+            box-shadow: 0 4px 15px rgba(0, 82, 255, 0.3);
+        }
+
+        .deliveries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 25px;
+        }
+
+        .delivery-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .delivery-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .map-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #0033CC 0%, #0052FF 50%, #00D4AA 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .map-container img:hover {
+    transform: scale(1.05);
+}
+
+        .map-placeholder {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.75);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.25em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .status-pendente {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-emandamento {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-concluido {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-urgente {
+            background: #f8d7da;
+            color: #721c24;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.95em;
+        }
+
+        .info-row .icon {
+            font-size: 1.3em;
+            width: 30px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #555;
+            min-width: 100px;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .special-condition {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+
+        .price-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .price-box {
+            background: linear-gradient(135deg, #0033CC 0%, #0052FF 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .price-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .price {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .tracking-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #0033CC 0%, #0052FF 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tracking-btn:hover {
+            background: linear-gradient(135deg, #0052FF 0%, #00D4AA 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 82, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .deliveries-grid {
+                grid-template-columns: 1fr;
+            }
+            .price-section {
+                grid-template-columns: 1fr;
+            }
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <div class="logo">
+                <img src="logo.png" alt="Logo VAPT-VUPT" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
+            </div>
+            <h1>VAPT-VUPT</h1>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar" id="userAvatar">E</div>
+            <div>
+                <strong id="userName">Empresa</strong>
+                <p style="font-size: 0.9em; opacity: 0.9;">Centro de Distribuição</p>
+            </div>
+            <button class="btn reset-btn" onclick="resetarEntregas()">🔄 Resetar Entregas</button>
+            <button class="btn logout-btn" onclick="logout()">Sair</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="centro-distribuicao">
+            <div class="centro-icon">🏭</div>
+            <div class="centro-info">
+                <h3>Centro de Distribuição</h3>
+                <p>Escola Técnica Estadual Professor Doutor José Dagnoni</p>
+                <p>Santa Bárbara d'Oeste - SP</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">📦</div>
+                <div class="stat-info">
+                    <h3>Total de Entregas</h3>
+                    <p id="totalEntregas">4</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">⏳</div>
+                <div class="stat-info">
+                    <h3>Pendentes</h3>
+                    <p id="totalPendentes">1</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">✅</div>
+                <div class="stat-info">
+                    <h3>Concluídas</h3>
+                    <p id="totalConcluidas">1</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon red">⚡</div>
+                <div class="stat-info">
+                    <h3>Urgentes</h3>
+                    <p id="totalUrgentes">1</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('todas')">📋 Todas</div>
+            <div class="tab" onclick="showTab('pendente')">⏳ Pendentes</div>
+            <div class="tab" onclick="showTab('emandamento')">🚚 Em Andamento</div>
+            <div class="tab" onclick="showTab('concluido')">✅ Concluídas</div>
+        </div>
+
+        <div id="deliveriesContainer"></div>
+    </div>
+
+    <script>
+        let currentTab = 'todas';
+        
+        // Coordenadas do centro de distribuição (Escola Técnica Estadual Professor Doutor José Dagnoni)
+        const centroDistribuicao = {
+            lat: -22.7332472,
+            lng: -47.3815239,
+            nome: "Escola Técnica Estadual Professor Doutor José Dagnoni - Santa Bárbara d'Oeste"
+        };
+
+        // Destinos próximos ao centro de distribuição
+    const destinosProximos = [
+        {
+            nome: "Santa Bárbara d'Oeste - Centro",
+            lat: -22.7539,
+            lng: -47.4136
+        },
+        {
+            nome: "Americana - Centro",
+            lat: -22.7372,
+            lng: -47.3331
+        },
+        {
+            nome: "Nova Odessa - Centro",
+            lat: -22.7828,
+            lng: -47.2978
+        },
+        {
+            nome: "Sumaré - Centro",
+            lat: -22.8219,
+            lng: -47.2669
+        },
+        {
+            nome: "Hortolândia - Centro",
+            lat: -22.8583,
+            lng: -47.2200
+        },
+        {
+            nome: "Campinas - Centro",
+            lat: -22.9099,
+            lng: -47.0626
+        }
+    ];
+
+    // Estado original das entregas (para reset)
+const entregasOriginais = [
+    {
+        id: 1,
+        produto: "Eletrônicos (Notebook Dell)",
+        categoria: "Eletrônicos",
+        cliente: "João Silva",
+        dataEmissao: "07/11/2025",
+        seguro: "Sim",
+        valorProduto: 2500.00,
+        valorFrete: 11.58,
+        origem: centroDistribuicao,
+        destino: destinosProximos[0],
+        distancia: 5,
+        peso: "3.5 kg",
+        dimensoes: "40x30x8 cm",
+        condicaoEspecial: "Produto frágil - Manuseio cuidadoso obrigatório",
+        prazo: "24h",
+        notaFiscal: "NF-45678",
+        status: "disponivel"
+    },
+    {
+        id: 2,
+        produto: "Roupas e Acessórios",
+        categoria: "Moda e Vestuário",
+        cliente: "Maria Oliveira",
+        dataEmissao: "07/11/2025",
+        seguro: "Não",
+        valorProduto: 480.00,
+        valorFrete: 16.45,
+        origem: centroDistribuicao,
+        destino: destinosProximos[1],
+        distancia: 8,
+        peso: "2.0 kg",
+        dimensoes: "35x25x15 cm",
+        condicaoEspecial: null,
+        prazo: "48h",
+        notaFiscal: "NF-45679",
+        status: "disponivel"
+    },
+    {
+        id: 3,
+        produto: "Medicamentos Refrigerados",
+        categoria: "Farmacêuticos",
+        cliente: "Hospital Santa Clara",
+        dataEmissao: "07/11/2025",
+        seguro: "Sim",
+        valorProduto: 800.00,
+        valorFrete: 20.00,
+        origem: centroDistribuicao,
+        destino: destinosProximos[2],
+        distancia: 12,
+        peso: "1.2 kg",
+        dimensoes: "20x15x10 cm",
+        condicaoEspecial: "⚠️ URGENTE: Manter refrigeração entre 2°C e 8°C",
+        prazo: "12h",
+        notaFiscal: "NF-45680",
+        status: "urgente"
+    },
+    {
+        id: 4,
+        produto: "Livros e Materiais Escolares",
+        categoria: "Educação",
+        cliente: "Editora Saber",
+        dataEmissao: "07/11/2025",
+        seguro: "Não",
+        valorProduto: 350.00,
+        valorFrete: 19.63,
+        origem: centroDistribuicao,
+        destino: destinosProximos[3],
+        distancia: 15,
+        peso: "8.5 kg",
+        dimensoes: "45x35x30 cm",
+        condicaoEspecial: null,
+        prazo: "72h",
+        notaFiscal: "NF-45681",
+        status: "disponivel"
+    },
+    {
+        id: 5,
+        produto: "Smartphone Samsung Galaxy",
+        categoria: "Eletrônicos",
+        cliente: "Carlos Mendes",
+        dataEmissao: "07/11/2025",
+        seguro: "Sim",
+        valorProduto: 3500.00,
+        valorFrete: 15.75,
+        origem: centroDistribuicao,
+        destino: destinosProximos[4],
+        distancia: 18,
+        peso: "0.8 kg",
+        dimensoes: "16x8x2 cm",
+        condicaoEspecial: "Produto de alto valor - Requer assinatura do destinatário",
+        prazo: "24h",
+        notaFiscal: "NF-45682",
+        status: "disponivel"
+    },
+    {
+        id: 6,
+        produto: "Perfumes Importados",
+        categoria: "Cosméticos",
+        cliente: "Loja Glamour",
+        dataEmissao: "07/11/2025",
+        seguro: "Sim",
+        valorProduto: 1200.00,
+        valorFrete: 9.90,
+        origem: centroDistribuicao,
+        destino: destinosProximos[5],
+        distancia: 25,
+        peso: "1.2 kg",
+        dimensoes: "25x15x10 cm",
+        condicaoEspecial: "Produto líquido - Manter em posição vertical",
+        prazo: "48h",
+        notaFiscal: "NF-45683",
+        status: "disponivel"
+    }
+];
+
+        let entregas = JSON.parse(localStorage.getItem('empresaEntregas') || JSON.stringify(entregasOriginais));
+
+        function renderEntregas() {
+            const container = document.getElementById('deliveriesContainer');
+            let entregasFiltradas = entregas;
+
+            if (currentTab !== 'todas') {
+                entregasFiltradas = entregas.filter(e => e.status === currentTab);
+            }
+
+            if (entregasFiltradas.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">Nenhuma entrega encontrada.</p>';
+                return;
+            }
+
+            container.innerHTML = '<div class="deliveries-grid">' + 
+                entregasFiltradas.map(entrega => {
+                    let statusText = '';
+                    let statusClass = '';
+                    
+                    switch(entrega.status) {
+                        case 'pendente':
+                            statusText = '⏳ Pendente';
+                            statusClass = 'status-pendente';
+                            break;
+                        case 'emandamento':
+                            statusText = '🚚 Em Andamento';
+                            statusClass = 'status-emandamento';
+                            break;
+                        case 'concluido':
+                            statusText = '✅ Concluído';
+                            statusClass = 'status-concluido';
+                            break;
+                        case 'urgente':
+                            statusText = '🔴 Urgente';
+                            statusClass = 'status-urgente';
+                            break;
+                    }
+
+                    return `
+                        <div class="delivery-card">
+                            <div class="map-container" style="position: relative; overflow: hidden; border-radius: 15px;">
+                                        <img 
+                                            src="imagens/rota${entrega.id}.png"
+                                            alt="Mapa da Rota"
+                                            style="
+                                                width: 100%;
+                                                height: 250px;
+                                                object-fit: cover;
+                                                object-position: center;
+                                                display: block;
+                                                transition: transform 0.3s ease;
+                                            ">
+                                        <div class="map-placeholder" style="position: absolute; bottom: 10px; left: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #fff; padding: 10px; border-radius: 8px; font-weight: 600; text-align: center;">
+                                            ${entrega.origem.nome} → ${entrega.destino.nome}
+                                        </div>
+                                    </div>
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <div class="card-title">${entrega.produto}</div>
+                                    <span class="status-badge ${statusClass}">${statusText}</span>
+                                </div>
+
+                                <div class="info-row">
+                                    <span class="icon">🏷️</span>
+                                    <span class="info-label">Categoria:</span>
+                                    <span class="info-value">${entrega.categoria}</span>
+                                </div>
+
+                                <div class="info-row">
+                                    <span class="icon">👤</span>
+                                    <span class="info-label">Cliente:</span>
+                                    <span class="info-value">${entrega.cliente}</span>
+                                </div>
+
+                                <div class="info-row">
+                                    <span class="icon">📍</span>
+                                    <span class="info-label">Origem:</span>
+                                    <span class="info-value">${entrega.origem.nome}</span>
+                                </div>
+
+                                <div class="info-row">
+                                    <span class="icon">🎯</span>
+                                    <span class="info-label">Destino:</span>
+                                    <span class="info-value">${entrega.destino.nome}</span>
+                                </div>
+
+                                <div class="info-row">
+                                    <span class="icon">📏</span>
+                                    <span class="info-label">Distância:</span>
+                                    <span class="info-value">${entrega.distancia} km</span>
+                                </div>
+
+                                <div class="info-row">
+                                    <span class="icon">⚖️</span>
+                                    <span class="info-label">Peso:</span>
+                                    <span class="info-value">${entrega.peso}</span>
+                                </div>
+
+                                <div class="info-row">
+                                    <span class="icon">📦</span>
+                                    <span class="info-label">Dimensões:</span>
+                                    <span class="info-value">${entrega.dimensoes}</span>
+                                </div>
+
+                                <div class="info-row">
+                                    <span class="icon">📄</span>
+                                    <span class="info-label">Nota Fiscal:</span>
+                                    <span class="info-value">${entrega.notaFiscal}</span>
+                                </div>
+
+                                <div class="info-row">
+                                    <span class="icon">📅</span>
+                                    <span class="info-label">Data Emissão:</span>
+                                    <span class="info-value">${entrega.dataEmissao}</span>
+                                </div>
+
+                                <div class="info-row">
+                                    <span class="icon">🛡️</span>
+                                    <span class="info-label">Seguro:</span>
+                                    <span class="info-value">${entrega.seguro}</span>
+                                </div>
+
+                                ${entrega.motorista ? `
+                                    <div class="info-row">
+                                        <span class="icon">🚚</span>
+                                        <span class="info-label">Motorista:</span>
+                                        <span class="info-value">${entrega.motorista}</span>
+                                    </div>
+                                ` : ''}
+
+                                ${entrega.condicaoEspecial ? `
+                                    <div class="special-condition">
+                                        <strong>⚠️ Condição Especial:</strong>
+                                        <p>${entrega.condicaoEspecial}</p>
+                                    </div>
+                                ` : ''}
+
+                                <div class="price-section">
+                                    <div class="price-box">
+                                        <div class="price-label">Valor do Produto</div>
+                                        <div class="price">R$ ${entrega.valorProduto.toFixed(2)}</div>
+                                    </div>
+                                    <div class="price-box">
+                                        <div class="price-label">Valor do Frete</div>
+                                        <div class="price">R$ ${entrega.valorFrete.toFixed(2)}</div>
+                                    </div>
+                                </div>
+
+                                ${entrega.status === 'emandamento' ? `
+                                    <button class="tracking-btn" onclick="abrirRastreamento(${entrega.id})">
+                                        🗺️ Rastrear Entrega em Tempo Real
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('') + '</div>';
+
+            atualizarEstatisticas();
+        }
+
+        function showTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            renderEntregas();
+        }
+
+        function atualizarEstatisticas() {
+            document.getElementById('totalEntregas').textContent = entregas.length;
+            
+            const pendentes = entregas.filter(e => e.status === 'pendente' || e.status === 'urgente').length;
+            document.getElementById('totalPendentes').textContent = pendentes;
+
+            const concluidas = entregas.filter(e => e.status === 'concluido').length;
+            document.getElementById('totalConcluidas').textContent = concluidas;
+
+            const urgentes = entregas.filter(e => e.status === 'urgente').length;
+            document.getElementById('totalUrgentes').textContent = urgentes;
+        }
+
+        function abrirRastreamento(id) {
+            const entrega = entregas.find(e => e.id === id);
+            if (entrega) {
+                const url = `https://www.google.com/maps/dir/?api=1&origin=${entrega.origem.lat},${entrega.origem.lng}&destination=${entrega.destino.lat},${entrega.destino.lng}&travelmode=driving`;
+                window.open(url, '_blank');
+            }
+        }
+
+        function resetarEntregas() {
+            if (confirm('Deseja realmente resetar todas as entregas para o estado original?')) {
+                entregas = JSON.parse(JSON.stringify(entregasOriginais));
+                localStorage.setItem('empresaEntregas', JSON.stringify(entregas));
+                alert('✅ Entregas resetadas com sucesso!');
+                renderEntregas();
+            }
+        }
+
+        function logout() {
+            if (confirm('Deseja realmente sair?')) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            }
+        }
+
+        window.onload = function() {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (user.nome) {
+                document.getElementById('userName').textContent = user.nome;
+                document.getElementById('userAvatar').textContent = user.nome.charAt(0).toUpperCase();
+            }
+            
+            renderEntregas();
+        };
+    </script>
+</body>
+</html>
