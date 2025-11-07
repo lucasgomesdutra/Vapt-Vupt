@@ -455,7 +455,7 @@
                 <div class="stat-icon green">💰</div>
                 <div class="stat-info">
                     <h3>Valor Médio</h3>
-                    <p id="valorMedio">R$ 81,25</p>
+                    <p>R$ 15,50</p>
                 </div>
             </div>
 
@@ -843,10 +843,7 @@ const entregasOriginais = [
             const urgentes = disponiveis.filter(e => e.status === 'urgente').length;
             document.getElementById('totalUrgentes').textContent = urgentes;
 
-            if (disponiveis.length > 0) {
-                const valorMedio = disponiveis.reduce((sum, e) => sum + e.valor, 0) / disponiveis.length;
-                document.getElementById('valorMedio').textContent = `R$ ${valorMedio.toFixed(2)}`;
-            }
+
         }
 
         function logout() {
