@@ -41,6 +41,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.5em;
         }
 
         .navbar-brand h1 {
@@ -234,13 +235,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
 
-        .map-image {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            display: block;
-        }
-
         .map-container {
             width: 100%;
             height: 250px;
@@ -250,9 +244,10 @@
             align-items: center;
             justify-content: center;
         }
+
         .map-container img:hover {
-    transform: scale(1.05);
-}
+            transform: scale(1.05);
+        }
 
         .map-placeholder {
             position: absolute;
@@ -292,7 +287,7 @@
             font-weight: bold;
         }
 
-        .status-pendente {
+        .status-disponivel {
             background: #fff3cd;
             color: #856404;
         }
@@ -414,9 +409,7 @@
 <body>
     <nav class="navbar">
         <div class="navbar-brand">
-            <div class="logo">
-                <img src="logo.png" alt="Logo VAPT-VUPT" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
-            </div>
+            <div class="logo">🏢</div>
             <h1>VAPT-VUPT</h1>
         </div>
         <div class="user-info">
@@ -445,15 +438,15 @@
                 <div class="stat-icon blue">📦</div>
                 <div class="stat-info">
                     <h3>Total de Entregas</h3>
-                    <p id="totalEntregas">4</p>
+                    <p id="totalEntregas">6</p>
                 </div>
             </div>
 
             <div class="stat-card">
                 <div class="stat-icon orange">⏳</div>
                 <div class="stat-info">
-                    <h3>Pendentes</h3>
-                    <p id="totalPendentes">1</p>
+                    <h3>Disponíveis</h3>
+                    <p id="totalDisponiveis">6</p>
                 </div>
             </div>
 
@@ -461,7 +454,7 @@
                 <div class="stat-icon green">✅</div>
                 <div class="stat-info">
                     <h3>Concluídas</h3>
-                    <p id="totalConcluidas">1</p>
+                    <p id="totalConcluidas">0</p>
                 </div>
             </div>
 
@@ -476,7 +469,7 @@
 
         <div class="tabs">
             <div class="tab active" onclick="showTab('todas')">📋 Todas</div>
-            <div class="tab" onclick="showTab('pendente')">⏳ Pendentes</div>
+            <div class="tab" onclick="showTab('disponivel')">⏳ Disponíveis</div>
             <div class="tab" onclick="showTab('emandamento')">🚚 Em Andamento</div>
             <div class="tab" onclick="showTab('concluido')">✅ Concluídas</div>
         </div>
@@ -487,177 +480,175 @@
     <script>
         let currentTab = 'todas';
         
-        // Coordenadas do centro de distribuição (Escola Técnica Estadual Professor Doutor José Dagnoni)
+        // MESMA CHAVE COMPARTILHADA COM O MOTORISTA
+        const STORAGE_KEY = 'vaptVuptEntregas';
+
         const centroDistribuicao = {
             lat: -22.7332472,
             lng: -47.3815239,
             nome: "Escola Técnica Estadual Professor Doutor José Dagnoni - Santa Bárbara d'Oeste"
         };
 
-        // Destinos próximos ao centro de distribuição
-    const destinosProximos = [
-        {
-            nome: "Santa Bárbara d'Oeste - Centro",
-            lat: -22.7539,
-            lng: -47.4136
-        },
-        {
-            nome: "Americana - Centro",
-            lat: -22.7372,
-            lng: -47.3331
-        },
-        {
-            nome: "Nova Odessa - Centro",
-            lat: -22.7828,
-            lng: -47.2978
-        },
-        {
-            nome: "Sumaré - Centro",
-            lat: -22.8219,
-            lng: -47.2669
-        },
-        {
-            nome: "Hortolândia - Centro",
-            lat: -22.8583,
-            lng: -47.2200
-        },
-        {
-            nome: "Campinas - Centro",
-            lat: -22.9099,
-            lng: -47.0626
+        const destinosProximos = [
+            { nome: "Santa Bárbara d'Oeste - Centro", lat: -22.7539, lng: -47.4136 },
+            { nome: "Americana - Centro", lat: -22.7372, lng: -47.3331 },
+            { nome: "Nova Odessa - Centro", lat: -22.7828, lng: -47.2978 },
+            { nome: "Sumaré - Centro", lat: -22.8219, lng: -47.2669 },
+            { nome: "Hortolândia - Centro", lat: -22.8583, lng: -47.2200 },
+            { nome: "Campinas - Centro", lat: -22.9099, lng: -47.0626 }
+        ];
+
+        const entregasOriginais = [
+            {
+                id: 1,
+                produto: "Eletrônicos (Notebook Dell)",
+                categoria: "Eletrônicos",
+                cliente: "João Silva",
+                dataEmissao: "07/11/2025",
+                seguro: "Sim",
+                valorProduto: 2500.00,
+                valorFrete: 11.58,
+                origem: centroDistribuicao,
+                destino: destinosProximos[0],
+                distancia: 5,
+                peso: "3.5 kg",
+                dimensoes: "40x30x8 cm",
+                condicaoEspecial: "Produto frágil - Manuseio cuidadoso obrigatório",
+                prazo: "24h",
+                notaFiscal: "NF-45678",
+                status: "disponivel"
+            },
+            {
+                id: 2,
+                produto: "Roupas e Acessórios",
+                categoria: "Moda e Vestuário",
+                cliente: "Maria Oliveira",
+                dataEmissao: "07/11/2025",
+                seguro: "Não",
+                valorProduto: 480.00,
+                valorFrete: 16.45,
+                origem: centroDistribuicao,
+                destino: destinosProximos[1],
+                distancia: 8,
+                peso: "2.0 kg",
+                dimensoes: "35x25x15 cm",
+                condicaoEspecial: null,
+                prazo: "48h",
+                notaFiscal: "NF-45679",
+                status: "disponivel"
+            },
+            {
+                id: 3,
+                produto: "Medicamentos Refrigerados",
+                categoria: "Farmacêuticos",
+                cliente: "Hospital Santa Clara",
+                dataEmissao: "07/11/2025",
+                seguro: "Sim",
+                valorProduto: 800.00,
+                valorFrete: 20.00,
+                origem: centroDistribuicao,
+                destino: destinosProximos[2],
+                distancia: 12,
+                peso: "1.2 kg",
+                dimensoes: "20x15x10 cm",
+                condicaoEspecial: "⚠️ URGENTE: Manter refrigeração entre 2°C e 8°C",
+                prazo: "12h",
+                notaFiscal: "NF-45680",
+                status: "urgente"
+            },
+            {
+                id: 4,
+                produto: "Livros e Materiais Escolares",
+                categoria: "Educação",
+                cliente: "Editora Saber",
+                dataEmissao: "07/11/2025",
+                seguro: "Não",
+                valorProduto: 350.00,
+                valorFrete: 19.63,
+                origem: centroDistribuicao,
+                destino: destinosProximos[3],
+                distancia: 15,
+                peso: "8.5 kg",
+                dimensoes: "45x35x30 cm",
+                condicaoEspecial: null,
+                prazo: "72h",
+                notaFiscal: "NF-45681",
+                status: "disponivel"
+            },
+            {
+                id: 5,
+                produto: "Smartphone Samsung Galaxy",
+                categoria: "Eletrônicos",
+                cliente: "Carlos Mendes",
+                dataEmissao: "07/11/2025",
+                seguro: "Sim",
+                valorProduto: 3500.00,
+                valorFrete: 15.75,
+                origem: centroDistribuicao,
+                destino: destinosProximos[4],
+                distancia: 18,
+                peso: "0.8 kg",
+                dimensoes: "16x8x2 cm",
+                condicaoEspecial: "Produto de alto valor - Requer assinatura do destinatário",
+                prazo: "24h",
+                notaFiscal: "NF-45682",
+                status: "disponivel"
+            },
+            {
+                id: 6,
+                produto: "Perfumes Importados",
+                categoria: "Cosméticos",
+                cliente: "Loja Glamour",
+                dataEmissao: "07/11/2025",
+                seguro: "Sim",
+                valorProduto: 1200.00,
+                valorFrete: 9.90,
+                origem: centroDistribuicao,
+                destino: destinosProximos[5],
+                distancia: 25,
+                peso: "1.2 kg",
+                dimensoes: "25x15x10 cm",
+                condicaoEspecial: "Produto líquido - Manter em posição vertical",
+                prazo: "48h",
+                notaFiscal: "NF-45683",
+                status: "disponivel"
+            }
+        ];
+
+        // Funções de gerenciamento do localStorage compartilhado
+        function carregarEntregas() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            if (!data) {
+                const initialData = {
+                    entregas: JSON.parse(JSON.stringify(entregasOriginais))
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(initialData));
+                return initialData.entregas;
+            }
+            return JSON.parse(data).entregas;
         }
-    ];
 
-    // Estado original das entregas (para reset)
-const entregasOriginais = [
-    {
-        id: 1,
-        produto: "Eletrônicos (Notebook Dell)",
-        categoria: "Eletrônicos",
-        cliente: "João Silva",
-        dataEmissao: "07/11/2025",
-        seguro: "Sim",
-        valorProduto: 2500.00,
-        valorFrete: 11.58,
-        origem: centroDistribuicao,
-        destino: destinosProximos[0],
-        distancia: 5,
-        peso: "3.5 kg",
-        dimensoes: "40x30x8 cm",
-        condicaoEspecial: "Produto frágil - Manuseio cuidadoso obrigatório",
-        prazo: "24h",
-        notaFiscal: "NF-45678",
-        status: "disponivel"
-    },
-    {
-        id: 2,
-        produto: "Roupas e Acessórios",
-        categoria: "Moda e Vestuário",
-        cliente: "Maria Oliveira",
-        dataEmissao: "07/11/2025",
-        seguro: "Não",
-        valorProduto: 480.00,
-        valorFrete: 16.45,
-        origem: centroDistribuicao,
-        destino: destinosProximos[1],
-        distancia: 8,
-        peso: "2.0 kg",
-        dimensoes: "35x25x15 cm",
-        condicaoEspecial: null,
-        prazo: "48h",
-        notaFiscal: "NF-45679",
-        status: "disponivel"
-    },
-    {
-        id: 3,
-        produto: "Medicamentos Refrigerados",
-        categoria: "Farmacêuticos",
-        cliente: "Hospital Santa Clara",
-        dataEmissao: "07/11/2025",
-        seguro: "Sim",
-        valorProduto: 800.00,
-        valorFrete: 20.00,
-        origem: centroDistribuicao,
-        destino: destinosProximos[2],
-        distancia: 12,
-        peso: "1.2 kg",
-        dimensoes: "20x15x10 cm",
-        condicaoEspecial: "⚠️ URGENTE: Manter refrigeração entre 2°C e 8°C",
-        prazo: "12h",
-        notaFiscal: "NF-45680",
-        status: "urgente"
-    },
-    {
-        id: 4,
-        produto: "Livros e Materiais Escolares",
-        categoria: "Educação",
-        cliente: "Editora Saber",
-        dataEmissao: "07/11/2025",
-        seguro: "Não",
-        valorProduto: 350.00,
-        valorFrete: 19.63,
-        origem: centroDistribuicao,
-        destino: destinosProximos[3],
-        distancia: 15,
-        peso: "8.5 kg",
-        dimensoes: "45x35x30 cm",
-        condicaoEspecial: null,
-        prazo: "72h",
-        notaFiscal: "NF-45681",
-        status: "disponivel"
-    },
-    {
-        id: 5,
-        produto: "Smartphone Samsung Galaxy",
-        categoria: "Eletrônicos",
-        cliente: "Carlos Mendes",
-        dataEmissao: "07/11/2025",
-        seguro: "Sim",
-        valorProduto: 3500.00,
-        valorFrete: 15.75,
-        origem: centroDistribuicao,
-        destino: destinosProximos[4],
-        distancia: 18,
-        peso: "0.8 kg",
-        dimensoes: "16x8x2 cm",
-        condicaoEspecial: "Produto de alto valor - Requer assinatura do destinatário",
-        prazo: "24h",
-        notaFiscal: "NF-45682",
-        status: "disponivel"
-    },
-    {
-        id: 6,
-        produto: "Perfumes Importados",
-        categoria: "Cosméticos",
-        cliente: "Loja Glamour",
-        dataEmissao: "07/11/2025",
-        seguro: "Sim",
-        valorProduto: 1200.00,
-        valorFrete: 9.90,
-        origem: centroDistribuicao,
-        destino: destinosProximos[5],
-        distancia: 25,
-        peso: "1.2 kg",
-        dimensoes: "25x15x10 cm",
-        condicaoEspecial: "Produto líquido - Manter em posição vertical",
-        prazo: "48h",
-        notaFiscal: "NF-45683",
-        status: "disponivel"
-    }
-];
+        function salvarEntregas(entregas) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ entregas }));
+        }
 
-        let entregas = JSON.parse(localStorage.getItem('empresaEntregas') || JSON.stringify(entregasOriginais));
+        let entregas = carregarEntregas();
 
         function renderEntregas() {
             const container = document.getElementById('deliveriesContainer');
             let entregasFiltradas = entregas;
 
-            if (currentTab !== 'todas') {
-                entregasFiltradas = entregas.filter(e => e.status === currentTab);
+            if (currentTab === 'disponivel') {
+                entregasFiltradas = entregas.filter(e => e.status === 'disponivel' || e.status === 'urgente');
+            } else if (currentTab === 'emandamento') {
+                entregasFiltradas = entregas.filter(e => e.status === 'emandamento');
+            } else if (currentTab === 'concluido') {
+                entregasFiltradas = entregas.filter(e => e.status === 'concluido');
             }
 
             if (entregasFiltradas.length === 0) {
                 container.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">Nenhuma entrega encontrada.</p>';
+                atualizarEstatisticas();
                 return;
             }
 
@@ -666,23 +657,18 @@ const entregasOriginais = [
                     let statusText = '';
                     let statusClass = '';
                     
-                    switch(entrega.status) {
-                        case 'pendente':
-                            statusText = '⏳ Pendente';
-                            statusClass = 'status-pendente';
-                            break;
-                        case 'emandamento':
-                            statusText = '🚚 Em Andamento';
-                            statusClass = 'status-emandamento';
-                            break;
-                        case 'concluido':
-                            statusText = '✅ Concluído';
-                            statusClass = 'status-concluido';
-                            break;
-                        case 'urgente':
-                            statusText = '🔴 Urgente';
-                            statusClass = 'status-urgente';
-                            break;
+                    if (entrega.status === 'disponivel') {
+                        statusText = '⏳ Disponível';
+                        statusClass = 'status-disponivel';
+                    } else if (entrega.status === 'emandamento') {
+                        statusText = '🚚 Em Andamento';
+                        statusClass = 'status-emandamento';
+                    } else if (entrega.status === 'concluido') {
+                        statusText = '✅ Concluído';
+                        statusClass = 'status-concluido';
+                    } else if (entrega.status === 'urgente') {
+                        statusText = '🔴 Urgente';
+                        statusClass = 'status-urgente';
                     }
 
                     return `
@@ -702,7 +688,7 @@ const entregasOriginais = [
                                         <div class="map-placeholder" style="position: absolute; bottom: 10px; left: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #fff; padding: 10px; border-radius: 8px; font-weight: 600; text-align: center;">
                                             ${entrega.origem.nome} → ${entrega.destino.nome}
                                         </div>
-                                    </div>
+                            </div>
                             <div class="card-content">
                                 <div class="card-header">
                                     <div class="card-title">${entrega.produto}</div>
@@ -724,7 +710,7 @@ const entregasOriginais = [
                                 <div class="info-row">
                                     <span class="icon">📍</span>
                                     <span class="info-label">Origem:</span>
-                                    <span class="info-value">${entrega.origem.nome}</span>
+                                    <span class="info-value">${entrega.origem.nome.split('-')[0].trim()}</span>
                                 </div>
 
                                 <div class="info-row">
@@ -818,8 +804,8 @@ const entregasOriginais = [
         function atualizarEstatisticas() {
             document.getElementById('totalEntregas').textContent = entregas.length;
             
-            const pendentes = entregas.filter(e => e.status === 'pendente' || e.status === 'urgente').length;
-            document.getElementById('totalPendentes').textContent = pendentes;
+            const disponiveis = entregas.filter(e => e.status === 'disponivel' || e.status === 'urgente').length;
+            document.getElementById('totalDisponiveis').textContent = disponiveis;
 
             const concluidas = entregas.filter(e => e.status === 'concluido').length;
             document.getElementById('totalConcluidas').textContent = concluidas;
@@ -839,7 +825,7 @@ const entregasOriginais = [
         function resetarEntregas() {
             if (confirm('Deseja realmente resetar todas as entregas para o estado original?')) {
                 entregas = JSON.parse(JSON.stringify(entregasOriginais));
-                localStorage.setItem('empresaEntregas', JSON.stringify(entregas));
+                salvarEntregas(entregas);
                 alert('✅ Entregas resetadas com sucesso!');
                 renderEntregas();
             }
