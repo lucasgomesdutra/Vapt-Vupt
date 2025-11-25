@@ -499,120 +499,120 @@
         ];
 
         const entregasOriginais = [
-            {
-                id: 1,
-                produto: "Eletrônicos (Notebook Dell)",
-                categoria: "Eletrônicos",
-                cliente: "João Silva",
-                dataEmissao: "07/11/2025",
-                seguro: "Sim",
-                valorProduto: 2500.00,
-                valorFrete: 11.58,
-                origem: centroDistribuicao,
-                destino: destinosProximos[0],
-                distancia: 5,
-                peso: "3.5 kg",
-                dimensoes: "40x30x8 cm",
-                condicaoEspecial: "Produto frágil - Manuseio cuidadoso obrigatório",
-                prazo: "24h",
-                notaFiscal: "NF-45678",
-                status: "disponivel"
-            },
-            {
-                id: 2,
-                produto: "Roupas e Acessórios",
-                categoria: "Moda e Vestuário",
-                cliente: "Maria Oliveira",
-                dataEmissao: "07/11/2025",
-                seguro: "Não",
-                valorProduto: 480.00,
-                valorFrete: 16.45,
-                origem: centroDistribuicao,
-                destino: destinosProximos[1],
-                distancia: 8,
-                peso: "2.0 kg",
-                dimensoes: "35x25x15 cm",
-                condicaoEspecial: null,
-                prazo: "48h",
-                notaFiscal: "NF-45679",
-                status: "disponivel"
-            },
-            {
-                id: 3,
-                produto: "Medicamentos Refrigerados",
-                categoria: "Farmacêuticos",
-                cliente: "Hospital Santa Clara",
-                dataEmissao: "07/11/2025",
-                seguro: "Sim",
-                valorProduto: 800.00,
-                valorFrete: 20.00,
-                origem: centroDistribuicao,
-                destino: destinosProximos[2],
-                distancia: 12,
-                peso: "1.2 kg",
-                dimensoes: "20x15x10 cm",
-                condicaoEspecial: "⚠️ URGENTE: Manter refrigeração entre 2°C e 8°C",
-                prazo: "12h",
-                notaFiscal: "NF-45680",
-                status: "urgente"
-            },
-            {
-                id: 4,
-                produto: "Livros e Materiais Escolares",
-                categoria: "Educação",
-                cliente: "Editora Saber",
-                dataEmissao: "07/11/2025",
-                seguro: "Não",
-                valorProduto: 350.00,
-                valorFrete: 19.63,
-                origem: centroDistribuicao,
-                destino: destinosProximos[3],
-                distancia: 15,
-                peso: "8.5 kg",
-                dimensoes: "45x35x30 cm",
-                condicaoEspecial: null,
-                prazo: "72h",
-                notaFiscal: "NF-45681",
-                status: "disponivel"
-            },
-            {
-                id: 5,
-                produto: "Smartphone Samsung Galaxy",
-                categoria: "Eletrônicos",
-                cliente: "Carlos Mendes",
-                dataEmissao: "07/11/2025",
-                seguro: "Sim",
-                valorProduto: 3500.00,
-                valorFrete: 15.75,
-                origem: centroDistribuicao,
-                destino: destinosProximos[4],
-                distancia: 18,
-                peso: "0.8 kg",
-                dimensoes: "16x8x2 cm",
-                condicaoEspecial: "Produto de alto valor - Requer assinatura do destinatário",
-                prazo: "24h",
-                notaFiscal: "NF-45682",
-                status: "disponivel"
-            },
-            {
-                id: 6,
-                produto: "Perfumes Importados",
-                categoria: "Cosméticos",
-                cliente: "Loja Glamour",
-                dataEmissao: "07/11/2025",
-                seguro: "Sim",
-                valorProduto: 1200.00,
-                valorFrete: 9.90,
-                origem: centroDistribuicao,
-                destino: destinosProximos[5],
-                distancia: 25,
-                peso: "1.2 kg",
-                dimensoes: "25x15x10 cm",
-                condicaoEspecial: "Produto líquido - Manter em posição vertical",
-                prazo: "48h",
-                notaFiscal: "NF-45683",
-                status: "disponivel"
-            }
+        {
+            id: 1,
+            produto: "Eletrônicos (Notebook Dell)",
+            categoria: "Eletrônicos",
+            cliente: "João Silva",
+            dataEmissao: "07/11/2025",
+            seguro: "Sim",
+            valorProduto: 2500.00,
+            valorFrete: 10.53,  // ← VALOR BASE
+            origem: centroDistribuicao,
+            destino: destinosProximos[0],
+            distancia: 5,
+            peso: "3.5 kg",
+            dimensoes: "40x30x8 cm",
+            condicaoEspecial: "Produto frágil - Manuseio cuidadoso obrigatório",
+            prazo: "24h",
+            notaFiscal: "NF-45678",
+            status: "disponivel"
+        },
+        {
+            id: 2,
+            produto: "Roupas e Acessórios",
+            categoria: "Moda e Vestuário",
+            cliente: "Maria Oliveira",
+            dataEmissao: "07/11/2025",
+            seguro: "Não",
+            valorProduto: 480.00,
+            valorFrete: 14.95,  // ← VALOR BASE
+            origem: centroDistribuicao,
+            destino: destinosProximos[1],
+            distancia: 8,
+            peso: "2.0 kg",
+            dimensoes: "35x25x15 cm",
+            condicaoEspecial: null,
+            prazo: "48h",
+            notaFiscal: "NF-45679",
+            status: "disponivel"
+        },
+        {
+            id: 3,
+            produto: "Medicamentos Refrigerados",
+            categoria: "Farmacêuticos",
+            cliente: "Hospital Santa Clara",
+            dataEmissao: "07/11/2025",
+            seguro: "Sim",
+            valorProduto: 800.00,
+            valorFrete: 18.18,  // ← VALOR BASE
+            origem: centroDistribuicao,
+            destino: destinosProximos[2],
+            distancia: 12,
+            peso: "1.2 kg",
+            dimensoes: "20x15x10 cm",
+            condicaoEspecial: "⚠️ URGENTE: Manter refrigeração entre 2°C e 8°C",
+            prazo: "12h",
+            notaFiscal: "NF-45680",
+            status: "urgente"
+        },
+        {
+            id: 4,
+            produto: "Livros e Materiais Escolares",
+            categoria: "Educação",
+            cliente: "Editora Saber",
+            dataEmissao: "07/11/2025",
+            seguro: "Não",
+            valorProduto: 350.00,
+            valorFrete: 16.05,  // ← VALOR BASE
+            origem: centroDistribuicao,
+            destino: destinosProximos[3],
+            distancia: 15,
+            peso: "8.5 kg",
+            dimensoes: "45x35x30 cm",
+            condicaoEspecial: null,
+            prazo: "72h",
+            notaFiscal: "NF-45681",
+            status: "disponivel"
+        },
+        {
+            id: 5,
+            produto: "Smartphone Samsung Galaxy",
+            categoria: "Eletrônicos",
+            cliente: "Carlos Mendes",
+            dataEmissao: "07/11/2025",
+            seguro: "Sim",
+            valorProduto: 3500.00,
+            valorFrete: 12.88,  // ← VALOR BASE
+            origem: centroDistribuicao,
+            destino: destinosProximos[4],
+            distancia: 18,
+            peso: "0.8 kg",
+            dimensoes: "16x8x2 cm",
+            condicaoEspecial: "Produto de alto valor - Requer assinatura do destinatário",
+            prazo: "24h",
+            notaFiscal: "NF-45682",
+            status: "disponivel"
+        },
+        {
+            id: 6,
+            produto: "Perfumes Importados",
+            categoria: "Cosméticos",
+            cliente: "Loja Glamour",
+            dataEmissao: "07/11/2025",
+            seguro: "Sim",
+            valorProduto: 1200.00,
+            valorFrete: 8.10,  // ← VALOR BASE
+            origem: centroDistribuicao,
+            destino: destinosProximos[5],
+            distancia: 25,
+            peso: "1.2 kg",
+            dimensoes: "25x15x10 cm",
+            condicaoEspecial: "Produto líquido - Manter em posição vertical",
+            prazo: "48h",
+            notaFiscal: "NF-45683",
+            status: "disponivel"
+        }
         ];
 
         // Funções de gerenciamento do localStorage compartilhado
@@ -777,7 +777,7 @@
                                     </div>
                                     <div class="price-box">
                                         <div class="price-label">Valor do Frete</div>
-                                        <div class="price">R$ ${entrega.valorFrete.toFixed(2)}</div>
+                                        <div class="price">R$ ${(entrega.valorFrete * 1.10).toFixed(2)}</div>
                                     </div>
                                 </div>
 
